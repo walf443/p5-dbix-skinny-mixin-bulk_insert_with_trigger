@@ -11,11 +11,17 @@ sub register_method {
 }
 
 sub bulk_insert_with_pre_insert_trigger {
-    my ($class, $table, $args) = @_;
+    my ($class, $table, $args, $init_auto_increment_pk) = @_;
 
     my $schema = $class->schema;
+    my $pk = $schema->schema_info->{$table}->{pk};
+
     for my $arg ( @{ $args } ) {
         $class->call_schema_trigger('pre_insert', $schema, $table, $arg);
+        if ( defined $init_auto_increment_pk ) {
+            $arg->{$pk} = $init_auto_increment_pk;
+            $init_auto_increment_pk++; # is it always int?
+        }
     }
     $class->bulk_insert($table, $args);
     # XXX: should call post_insert ? I don't need to fetch inserted data for calling post_insert hook.
