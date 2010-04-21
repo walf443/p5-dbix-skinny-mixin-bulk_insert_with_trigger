@@ -57,7 +57,6 @@ If you want to set auto_increment primary key, call followings:
     ], auto_increment_pk_init => 1);
 
 pre_insert trigger is executed for each item before bulk_insert.
-post_insert trigger is executed for each item after bulk_insert.
 
 =head1 DESCRIPTION
 
