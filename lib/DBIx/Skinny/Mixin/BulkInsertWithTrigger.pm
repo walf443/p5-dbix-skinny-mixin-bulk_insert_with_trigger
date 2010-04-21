@@ -44,10 +44,17 @@ DBIx::Skinny::Mixin::BulkInsertWithTrigger -
 
     package main;
 
-    YourProj::DB->bulk_insert_with_trigger(your_table => [
+    YourProj::DB->bulk_insert_with_pre_insert_trigger(your_table => [
         { id => 1, name => 'foo' },
         { id => 2, name => 'bar' },
     ]);
+
+If you want to set auto_increment primary key, call followings:
+
+    YourProj::DB->bulk_insert_with_pre_insert_trigger(your_table => [
+        { name => 'foo' },
+        { name => 'bar' },
+    ], auto_increment_pk_init => 1);
 
 pre_insert trigger is executed for each item before bulk_insert.
 post_insert trigger is executed for each item after bulk_insert.
