@@ -11,16 +11,18 @@ sub register_method {
 }
 
 sub bulk_insert_with_pre_insert_trigger {
-    my ($class, $table, $args, $init_auto_increment_pk) = @_;
+    my ($class, $table, $args, %args) = @_;
 
     my $schema = $class->schema;
     my $pk = $schema->schema_info->{$table}->{pk};
+    my $auto_increment_pk_init;
 
     for my $arg ( @{ $args } ) {
         $class->call_schema_trigger('pre_insert', $schema, $table, $arg);
-        if ( defined $init_auto_increment_pk ) {
-            $arg->{$pk} = $init_auto_increment_pk;
-            $init_auto_increment_pk++; # is it always int?
+        if ( exists $args{auto_increment_pk_init}) {
+            $auto_increment_pk_init ||= $args{auto_increment_pk_init};
+            $arg->{$pk} = $auto_increment_pk_init;
+            $auto_increment_pk_init++; # is it always int?
         }
     }
     $class->bulk_insert($table, $args);

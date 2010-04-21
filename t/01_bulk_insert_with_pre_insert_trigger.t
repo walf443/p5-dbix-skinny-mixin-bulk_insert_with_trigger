@@ -64,7 +64,7 @@ subtest 'bulk_insert method' => sub {
             {
                 name => 'python',
             },
-        ], 7);
+        ], auto_increment_pk_init => 7);
 
         is +Mock::Trigger->count('mock_trigger_pre', 'id'), 9;
         for ( my $i = 7; $i < 9; $i++ ) {
