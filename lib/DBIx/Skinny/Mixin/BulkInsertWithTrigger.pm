@@ -11,21 +11,21 @@ sub register_method {
 }
 
 sub bulk_insert_with_pre_insert_trigger {
-    my ($class, $table, $args, %args) = @_;
+    my ($class, $table, $data, %options) = @_;
 
     my $schema = $class->schema;
     my $pk = $schema->schema_info->{$table}->{pk};
     my $auto_increment_pk_init;
 
-    for my $arg ( @{ $args } ) {
-        $class->call_schema_trigger('pre_insert', $schema, $table, $arg);
-        if ( exists $args{auto_increment_pk_init}) {
-            $auto_increment_pk_init ||= $args{auto_increment_pk_init};
-            $arg->{$pk} = $auto_increment_pk_init;
+    for my $row ( @{ $data } ) {
+        $class->call_schema_trigger('pre_insert', $schema, $table, $row);
+        if ( exists $options{auto_increment_pk_init}) {
+            $auto_increment_pk_init ||= $options{auto_increment_pk_init};
+            $row->{$pk} = $auto_increment_pk_init;
             $auto_increment_pk_init++; # is it always int?
         }
     }
-    $class->bulk_insert($table, $args);
+    $class->bulk_insert($table, $data);
     # XXX: should call post_insert ? I don't need to fetch inserted data for calling post_insert hook.
 }
 
