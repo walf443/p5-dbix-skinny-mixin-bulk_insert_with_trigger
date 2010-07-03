@@ -52,30 +52,6 @@ subtest 'bulk_insert method' => sub {
         done_testing()
     };
 
-    subtest 'with init_auto_increment_pk' => sub {
-
-        Mock::Trigger->bulk_insert_with_pre_insert_trigger('mock_trigger_pre' => [
-            {
-                name => 'perl',
-            },
-            {
-                name => 'ruby',
-            },
-            {
-                name => 'python',
-            },
-        ], auto_increment_pk_init => 7);
-
-        is +Mock::Trigger->count('mock_trigger_pre', 'id'), 9;
-        for ( my $i = 7; $i < 9; $i++ ) {
-            my $item = Mock::Trigger->single(mock_trigger_pre => +{ id => $i});
-            ok($item, 'item should exist');
-            is($item->name, "pre_insert_s", "pre_insert should work");
-        }
-
-        done_testing;
-    };
-
     done_testing;
 };
 

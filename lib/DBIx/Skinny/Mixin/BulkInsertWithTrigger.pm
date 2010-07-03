@@ -15,15 +15,9 @@ sub bulk_insert_with_pre_insert_trigger {
 
     my $schema = $class->schema;
     my $pk = $schema->schema_info->{$table}->{pk};
-    my $auto_increment_pk_init;
 
     for my $row ( @{ $data } ) {
         $class->call_schema_trigger('pre_insert', $schema, $table, $row);
-        if ( exists $options{auto_increment_pk_init}) {
-            $auto_increment_pk_init ||= $options{auto_increment_pk_init};
-            $row->{$pk} = $auto_increment_pk_init;
-            $auto_increment_pk_init++; # is it always int?
-        }
     }
     $class->bulk_insert($table, $data);
     # XXX: should call post_insert ? I don't need to fetch inserted data for calling post_insert hook.
@@ -48,13 +42,6 @@ DBIx::Skinny::Mixin::BulkInsertWithTrigger -
         { id => 1, name => 'foo' },
         { id => 2, name => 'bar' },
     ]);
-
-If you want to set auto_increment primary key, call followings:
-
-    YourProj::DB->bulk_insert_with_pre_insert_trigger(your_table => [
-        { name => 'foo' },
-        { name => 'bar' },
-    ], auto_increment_pk_init => 1);
 
 pre_insert trigger is executed for each item before bulk_insert.
 
