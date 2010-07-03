@@ -13,17 +13,11 @@ SYNOPSIS
             { id => 2, name => 'bar' },
         ]);
 
-    If you want to set auto_increment primary key, call followings:
-
-        YourProj::DB->bulk_insert_with_pre_insert_trigger(your_table => [
-            { name => 'foo' },
-            { name => 'bar' },
-        ], auto_increment_pk_init => 1);
-
     pre_insert trigger is executed for each item before bulk_insert.
 
 DESCRIPTION
-    DBIx::Skinny::Mixin::BulkInsertWithTrigger is
+    DBIx::Skinny::Mixin::BulkInsertWithTrigger is for bulk_inserting data
+    with pre_insert trigger.
 
 AUTHOR
     Keiji Yoshimi <walf443 at gmail dot com>

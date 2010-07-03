@@ -46,7 +46,7 @@ pre_insert trigger is executed for each item before bulk_insert.
 
 =head1 DESCRIPTION
 
-DBIx::Skinny::Mixin::BulkInsertWithTrigger is
+DBIx::Skinny::Mixin::BulkInsertWithTrigger is for bulk_inserting data with pre_insert trigger.
 
 =head1 AUTHOR
 
