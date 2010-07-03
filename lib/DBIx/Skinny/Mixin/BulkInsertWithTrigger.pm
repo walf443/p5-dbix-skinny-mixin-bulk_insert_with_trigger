@@ -14,7 +14,6 @@ sub bulk_insert_with_pre_insert_trigger {
     my ($class, $table, $data, %options) = @_;
 
     my $schema = $class->schema;
-    my $pk = $schema->schema_info->{$table}->{pk};
 
     for my $row ( @{ $data } ) {
         $class->call_schema_trigger('pre_insert', $schema, $table, $row);
