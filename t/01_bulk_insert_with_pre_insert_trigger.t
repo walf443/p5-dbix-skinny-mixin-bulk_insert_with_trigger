@@ -1,4 +1,7 @@
 use t::Utils;
+use Test::Requires {
+    'DBD::SQLite' => undef,
+};
 use Mock::Trigger;
 use Test::More;
 
